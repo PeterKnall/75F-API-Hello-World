@@ -50,7 +50,7 @@ def getHisReadMany(username, password, subscriptionKey, ids, range):
 
         req.get_method = lambda: 'POST'
         response = urllib.request.urlopen(req)
-        print(response.getcode())  # results in HTTP Error 401: Unauthorized
+        print(response.getcode())  # results in HTTP Error 400: Bad Request
         print(response.read())
     except Exception as e:
         print(f"urllib: {e}")

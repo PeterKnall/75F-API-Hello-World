@@ -49,7 +49,7 @@ def getAuthorization(username, password, subscriptionKey):
 
         req.get_method = lambda: 'POST'
         response = urllib.request.urlopen(req)
-        print(f"urllib: {response.getcode()}")  # results in HTTP Error 401: Unauthorized
+        print(f"urllib: {response.getcode()}")  # results in HTTP Error 400: Bad Request
         print(f"urllib: {response.read()}")
     except Exception as e:
         print(f"urllib: {e}")
