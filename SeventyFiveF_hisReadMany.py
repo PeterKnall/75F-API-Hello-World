@@ -32,7 +32,10 @@ def getHisReadMany(username, password, subscriptionKey, ids, range):
             'Ocp-Apim-Subscription-Key': subscriptionKey,
         }
 
-        data = f"ver:\"3.0\" range:\"{range}\" id:\"{ids}\""
+        data = \
+f"""ver:\"3.0\" range:\"{range}\"
+id
+{ids}"""
         print(f"Data: {data}")
 
         # Using requests
