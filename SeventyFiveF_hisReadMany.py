@@ -4,7 +4,7 @@
 #
 # Scott and Madhu from 75F.
 #
-# Permanently deleted user:
+# Permanently deleted user (5 Nov 2025):
 # Link-1 : https://support.75f.io/hc/en-us/articles/5460179115923-HisReadMany-API?input_string=auth+and+hisreadmany+api+help
 # Link-2 : https://support.75f.io/hc/en-us/articles/5460365803027-75F-API-s-Error-Returns?input_string=auth+and+hisreadmany+api+help
 #
@@ -33,25 +33,26 @@ def getHisReadMany(username, password, subscriptionKey, ids, range):
 
     authorizationText = SeventyFiveF_Auth.getAuthorization(username, password, subscriptionKey)
 
-    try:
-        url = "https://api.75f.io/haystack/hisReadMany"
+    url = "https://api.75f.io/haystack/hisReadMany"
 
-        hdr ={
-            'Authorization': authorizationText,
-            'Accept': 'application/json',
-            'Content-Type': 'text/zinc',
-            'Cache-Control': 'no-cache',
-            'Ocp-Apim-Subscription-Key': subscriptionKey,
-        }
+    hdr ={
+        'Authorization': authorizationText,
+        'Accept': 'application/json',
+        'Content-Type': 'text/zinc',
+        'Cache-Control': 'no-cache',
+        'Ocp-Apim-Subscription-Key': subscriptionKey,
+    }
 
-        # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
-        data = \
+    # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
+    # TODO: send in a CSV list and separate here to clean up the code
+    data = \
 f"""ver:\"3.0\" range:\"{range}\"
 id
 {ids}"""
 
+    try:
         response = requests.post(url, data=data, headers=hdr, timeout=30)
         return json.loads(response.text)
 
     except Exception as e:
-        return "{'Exception', e}"
+        return "" # TODO: Handle or raise Exception as appropriate

@@ -1,57 +1,56 @@
 # Simple script to obtain an authorization code from 75F's API
-# Uses the "Peter-AES-Production ReadHisWrite" subscription and API/Facilisight credentials
-# Uses the Primary API Key
+#
+# A special thanks for the following supporters:
+#
+# Permanently deleted user (5 Nov 2025):
+# Link-1 : https://support.75f.io/hc/en-us/articles/5460179115923-HisReadMany-API?input_string=auth+and+hisreadmany+api+help
+# Link-2 : https://support.75f.io/hc/en-us/articles/5460365803027-75F-API-s-Error-Returns?input_string=auth+and+hisreadmany+api+help
+#
+# This example was pulled from the 75F API website and written for Python 3.2.
+# This example was executed in Python 3.10.11
 
-# Output lines labelled "Requests" show the response using the "Requests" library
-# Output lines labelled "urllib" show the response using the "urllib" library
-
-# Example was written for Python 3.2
-# Uses Python 3.10.11
-
-import os
 import requests
 import re
-import json
-import urllib.request
-
 
 def getAuthorization(username, password, subscriptionKey):
-    """Retrieves the Authorization Key using the username, password, and subscription key.  Prepends 'Bearer ' per 75F docs."""
-    authorizationText = ""
+    """
+    Retrieves the Authorization Key using the username, password, and subscription key.  Prepends 'Bearer '
+    to the Authorization Code per the 75F documentation.
+    Args:
+        username (string):  The Facilisight username that has API priviledges
+        password (string):  The password for the above username
+        subscriptionKey (string): The subscription key for the above username from the 75F API website
+
+    Returns:
+        Authorization Key (string): The authorization code from the 75F API for use during future requests.
+        Returns an empty string ("") if an Authorization Key is not returened.
+    """
+
+    url = "https://api.75f.io/oauth/token"
+
+    hdr ={
+    'Content-Type' : 'application/x-www-form-urlencoded',
+    'Cache-Control' : 'no-cache',
+    'Ocp-Apim-Subscription-Key' : subscriptionKey
+    }
+
+    data = {
+        "grant_type" : "client_credentials",
+        "client_id" : username,
+        "client_secret" : password
+    }
+
+    response = ""
     try:
-        url = "https://api.75f.io/oauth/token"
-
-        hdr ={
-        'Content-Type' : 'application/x-www-form-urlencoded',
-        'Cache-Control' : 'no-cache',
-        'Ocp-Apim-Subscription-Key' : subscriptionKey
-        }
-
-        data = {
-            "grant_type" : "client_credentials",
-            "client_id" : username,
-            "client_secret" : password
-        }
-
-        # Using requests
         response = requests.post(url, data=data, headers=hdr, timeout=15)
-        matches = re.findall(r'"(.*?)"', response.text)
-        if len(matches) >= 2:
-            authorizationText = 'Bearer ' + matches[1]
-            print(f"Requests: {authorizationText}")
     except Exception as e:
-        print(f"Requests: {e}")
+        return ""  # TODO: Handle or raise Exception as appropriate
 
-    # using urllib.request - retained for troubleshooting purposes
-    try:
-        data = json.dumps(data)
-        req = urllib.request.Request(url, headers=hdr, data = bytes(data.encode("utf-8")))
-
-        req.get_method = lambda: 'POST'
-        response = urllib.request.urlopen(req)
-        print(f"urllib: {response.getcode()}")  # results in HTTP Error 400: Bad Request
-        print(f"urllib: {response.read()}")
-    except Exception as e:
-        print(f"urllib: {e}")
-
-    return authorizationText
+    matches = re.findall(r'"(.*?)"', response.text)
+    if len == None:
+        return "" # TODO: Handle or raise Exception as appropriate
+    elif len(matches) >= 2:
+        authorizationText = 'Bearer ' + matches[1]
+        return authorizationText
+    else:
+        return "" # TODO: Handle or raise Exception as appropriate
