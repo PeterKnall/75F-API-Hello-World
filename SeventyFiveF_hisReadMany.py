@@ -1,23 +1,35 @@
-# Simple script to retrieve a set of trends from 75F Haystack
-# Uses the "Peter-AES-Production ReadHisWrite" subscription and API/Facilisight credentials
-# Uses the Primary API Key
+# Simple script to retrieve a historical values from 75F Haystack
 
-# Output lines labelled "Requests" show the response using the "Requests" library
-# Output lines labelled "urllib" show the response using the "urllib" library
-
+# A special thanks for the following supporters:
+#
+# Scott and Madhu from 75F.
+#
+# Permanently deleted user:
 # Link-1 : https://support.75f.io/hc/en-us/articles/5460179115923-HisReadMany-API?input_string=auth+and+hisreadmany+api+help
 # Link-2 : https://support.75f.io/hc/en-us/articles/5460365803027-75F-API-s-Error-Returns?input_string=auth+and+hisreadmany+api+help
-
-# Example was written for Python 3.2
-# Uses Python 3.10.11
+#
+# This example was pulled from the 75F API website and written for Python 3.2.
+# This example was executed in Python 3.10.11
+# the "requests" library replaced the "urllibs" library, which I could not get to work.
 
 import requests
-import json
-import urllib.request
 import SeventyFiveF_Auth
+import json
 
 def getHisReadMany(username, password, subscriptionKey, ids, range):
-    """Retrieves historical data"""
+    """
+    Retrieves historical data from the 75F API using hisReadMany.
+    Args:
+        username (string):  The Facilisight username that has API priviledges
+        password (string):  The password for the above username
+        subscriptionKey (string): The subscription key for the above username from the 75F API website
+        ids (string): A line separated list of ids to retrieve historical data for (see README.md)
+        range (string): The date range to pull historical data for
+
+    Returns:
+        results (json):
+
+    """
 
     authorizationText = SeventyFiveF_Auth.getAuthorization(username, password, subscriptionKey)
 
@@ -32,30 +44,14 @@ def getHisReadMany(username, password, subscriptionKey, ids, range):
             'Ocp-Apim-Subscription-Key': subscriptionKey,
         }
 
+        # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
         data = \
 f"""ver:\"3.0\" range:\"{range}\"
 id
 {ids}"""
-        print(f"Data: {data}")
 
-        # Using requests
         response = requests.post(url, data=data, headers=hdr, timeout=30)
-        print(f"Requests:<{response.text}>")  # results in error: Zinc could not be processed. Offending token located at line: 2, position 0
+        return json.loads(response.text)
 
     except Exception as e:
-        print(f"Requests: {e}")
-
-    # using urllib.request - retained for troubleshooting purposes
-    try:
-        # using urllib.request
-        data = json.dumps(data)
-        req = urllib.request.Request(url, headers=hdr, data = bytes(data.encode("utf-8")))
-
-        req.get_method = lambda: 'POST'
-        response = urllib.request.urlopen(req)
-        print(response.getcode())  # results in HTTP Error 400: Bad Request
-        print(response.read())
-    except Exception as e:
-        print(f"urllib: {e}")
-
-    return "MPL Complete."
+        return "{'Exception', e}"
