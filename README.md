@@ -1,2 +1,56 @@
 # Hello, world!
 A collection of projects serving as "PKs Notes" on how to use various 75F APIs.
+
+---
+## hisReadMany
+Used to read time-series (trend) data from points in the Facilisight platform.
+Points can be selected with tags or Haystack queries, and the time range can
+be defined by specific DateTime ranges or through the use of commonly
+defined terms (such as "today").
+
+The request in this example uses an HTTP 1.1 POST Request and Response to
+transmit and receive data.  The data is transmitted using Zinc formatted
+grid and received as text in JSON format.
+
+### Version
+The following text, as shown, must appear as the first argument in the 
+Request text to identify the version of Zinc being used:
+
+ver:"3.0"
+
+### Range
+Range can be formatted as:
+* "today"
+* "yesterday"
+* "{date}"
+* "{date},{date}"
+* "{dateTime},{dateTime}"
+* "{dateTime}"
+
+Where the dateTime is formatted as:
+
+"2020-01-01T12:00:00-04:00 New_York,2020-01-03T00:00:00-04:00 New_York"
+
+And date is formatted as:
+
+"2020-01-01"
+
+### ids
+
+"ids" are GUIDs for individual points.  Each id must begin with an "@"
+symbol, and only one id can appear on each line.
+
+---
+## Zinc
+Zinc stands for "Zinc is not CSV".
+### Syntax
+Every grid has the following "\n" separated lines:
+* One line of metadata applied to the entire grid
+* One line of column definitions
+* Zero ore more lines of rows
+
+https://project-haystack.org/doc/docHaystack/Zinc
+
+---
+## JSON
+JSON stands for Javascript Object Notation.
