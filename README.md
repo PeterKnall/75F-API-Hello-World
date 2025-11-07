@@ -40,6 +40,14 @@ And date is formatted as:
 "ids" are GUIDs for individual points.  Each id must begin with an "@"
 symbol, and only one id can appear on each line.
 
+### Example
+Note in the example below that there is no extra whitespace.  Extra spaces
+may cause the request to crash and return a Zinc error.
+
+ver:"3.0" range="today"\n
+@52bdc021-71d3-4479-903e-0b0986a993ee\n
+@52b2309a-10ec-4578-af76-8c1130c58044
+
 ---
 ## Zinc
 Zinc stands for "Zinc is not CSV".
