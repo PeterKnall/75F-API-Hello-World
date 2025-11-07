@@ -8,22 +8,23 @@
 #
 # This example was pulled from the 75F API website and written for Python 3.2.
 # This example was executed in Python 3.10.11
+# The "requests" library replaced the "urllibs" library, which I could not get to work.
 
 import requests
 import re
 
-def getAuthorization(username, password, subscriptionKey):
+def get_authorization(username, password, subscription_key):
     """
     Retrieves the Authorization Key using the username, password, and subscription key.  Prepends 'Bearer '
     to the Authorization Code per the 75F documentation.
     Args:
-        username (string):  The Facilisight username that has API priviledges
+        username (string):  The Facilisight username that has API privileges
         password (string):  The password for the above username
-        subscriptionKey (string): The subscription key for the above username from the 75F API website
+        subscription_key (string): The subscription key for the above username from the 75F API website
 
     Returns:
         Authorization Key (string): The authorization code from the 75F API for use during future requests.
-        Returns an empty string ("") if an Authorization Key is not returened.
+        Returns an empty string ("") if an Authorization Key is not returned.
     """
 
     url = "https://api.75f.io/oauth/token"
@@ -31,7 +32,7 @@ def getAuthorization(username, password, subscriptionKey):
     hdr ={
     'Content-Type' : 'application/x-www-form-urlencoded',
     'Cache-Control' : 'no-cache',
-    'Ocp-Apim-Subscription-Key' : subscriptionKey
+    'Ocp-Apim-Subscription-Key' : subscription_key
     }
 
     data = {
@@ -40,17 +41,16 @@ def getAuthorization(username, password, subscriptionKey):
         "client_secret" : password
     }
 
-    response = ""
     try:
         response = requests.post(url, data=data, headers=hdr, timeout=15)
     except Exception as e:
         return ""  # TODO: Handle or raise Exception as appropriate
 
     matches = re.findall(r'"(.*?)"', response.text)
-    if len == None:
+    if len is None:
         return "" # TODO: Handle or raise Exception as appropriate
     elif len(matches) >= 2:
-        authorizationText = 'Bearer ' + matches[1]
-        return authorizationText
+        authorization_string = 'Bearer ' + matches[1]
+        return authorization_string
     else:
         return "" # TODO: Handle or raise Exception as appropriate

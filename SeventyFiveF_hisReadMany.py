@@ -16,37 +16,37 @@ import requests
 import SeventyFiveF_Auth
 import json
 
-def getHisReadMany(username, password, subscriptionKey, ids, range):
+def get_hisReadMany(username, password, subscription_key, ids, date_range):
     """
     Retrieves historical data from the 75F API using hisReadMany.
     Args:
-        username (string):  The Facilisight username that has API priviledges
+        username (string):  The Facilisight username that has API privileges
         password (string):  The password for the above username
-        subscriptionKey (string): The subscription key for the above username from the 75F API website
+        subscription_key (string): The subscription key for the above username from the 75F API website
         ids (string): A line separated list of ids to retrieve historical data for (see README.md)
-        range (string): The date range to pull historical data for
+        date_range (string): The date range to pull historical data for
 
     Returns:
         results (json):
 
     """
 
-    authorizationText = SeventyFiveF_Auth.getAuthorization(username, password, subscriptionKey)
+    authorization_string = SeventyFiveF_Auth.get_authorization(username, password, subscription_key)
 
     url = "https://api.75f.io/haystack/hisReadMany"
 
     hdr ={
-        'Authorization': authorizationText,
+        'Authorization': authorization_string,
         'Accept': 'application/json',
         'Content-Type': 'text/zinc',
         'Cache-Control': 'no-cache',
-        'Ocp-Apim-Subscription-Key': subscriptionKey,
+        'Ocp-Apim-Subscription-Key': subscription_key,
     }
 
     # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
     # TODO: send in a CSV list and separate here to clean up the code
     data = \
-f"""ver:\"3.0\" range:\"{range}\"
+f"""ver:\"3.0\" range:\"{date_range}\"
 id
 {ids}"""
 
