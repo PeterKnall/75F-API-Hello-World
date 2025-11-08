@@ -44,14 +44,17 @@ def get_authorization(username, password, subscription_key):
     try:
         response = requests.post(url, data=data, headers=hdr, timeout=15)
     except Exception as e:
-        return ""  # TODO: Handle or raise Exception as appropriate
+        raise Exception(f"Exception while requesting Authentication Key in SeventyFiveF_Auth.get_authorization():\n{e}")
 
     matches = re.findall(r'"(.*?)"', response.text)
-    if len is None:
-        return "" # TODO: Handle or raise Exception as appropriate
+    if (matches is None) or (len(matches) == 0):
+        raise Exception(f"Exception while retrieving Authentication Key from Response:  No Matches found in response.")
+    elif len(matches) < 2:
+        raise Exception(f"Exception while retrieving Authentication Key from Response: Only one field returned: ")
     elif len(matches) >= 2:
+        if len(matches[1]) != 855:
+            raise Exception(f"Authorization Key is not 855 characters: {len(matches[1])}")
         authorization_string = 'Bearer ' + matches[1]
-        print(authorization_string)
         return authorization_string
     else:
-        return "" # TODO: Handle or raise Exception as appropriate
+        raise Exception(f"Unknown error in SeventyFiveF_Auth.get_authorization().")
