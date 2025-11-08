@@ -11,7 +11,7 @@
 import urllib.request, json
 import SeventyFiveF_Auth
 
-def get_read(username, password, subscription_key, id):
+def read_by_id(username, password, subscription_key, id):
     try:
         url = "https://api.75f.io/haystack/read"
         authorization_string = SeventyFiveF_Auth.get_authorization(username, password, subscription_key)
