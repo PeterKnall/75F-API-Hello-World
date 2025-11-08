@@ -51,6 +51,7 @@ def get_authorization(username, password, subscription_key):
         return "" # TODO: Handle or raise Exception as appropriate
     elif len(matches) >= 2:
         authorization_string = 'Bearer ' + matches[1]
+        print(authorization_string)
         return authorization_string
     else:
         return "" # TODO: Handle or raise Exception as appropriate
