@@ -8,30 +8,32 @@
 # Read by id: ver:"3.0" id @6d78f1c0-d10a-4482-8058-db328441a669 @84010772-46ec-4937-9430-71083196f2c4
 
 ########### Python 3.2 #############
-import urllib.request, json, requests
+import json
+import requests
 import SeventyFiveF.Auth as Auth
 
+class Read:
+    def __init__(self, username, password, subscription_key):
+        self.username = username
+        self.password = password
+        self.subscription_key = subscription_key
+        self.authorization_string = Auth.get_authorization(username, password, subscription_key)
+        self.url = "https://api.75f.io/haystack/read"
 
-def by_id(username, password, subscription_key, this_id):
+    def post(self):
+        self.hdr = {
+            'Authorization': self.authorization_string,
+            'Accept': 'application/json',
+            'Content-Type': 'text/zinc',
+            'Cache-Control': 'no-cache',
+            'Ocp-Apim-Subscription-Key': self.subscription_key,
+        }
+        data = self.get_body()
+        try:
+            response = requests.post(self.url, data=data, headers=self.hdr, timeout=30)
+            return json.loads(response.text)
+        except Exception as e:
+            raise Exception(f"Exception during SeventyFiveF.Read(): {e}")
 
-    url = "https://api.75f.io/haystack/read"
-    authorization_string = Auth.get_authorization(username, password, subscription_key)
-
-    hdr ={
-        'Authorization': authorization_string,
-        'Accept': 'application/json',
-        'Content-Type': 'text/zinc',
-        'Cache-Control': 'no-cache',
-        'Ocp-Apim-Subscription-Key': subscription_key,
-    }
-
-    # Request body
-    data = \
-f"""ver:\"3.0\"
-id
-{this_id}"""
-    try:
-        response = requests.post(url, data=data, headers=hdr, timeout=30)
-        return json.loads(response.text)
-    except Exception as e:
-        raise Exception(f"Exception during SeventyFiveF.Read.by_id(): {e}")
+    def get_body(self):
+        pass
