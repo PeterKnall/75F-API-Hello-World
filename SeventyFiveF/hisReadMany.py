@@ -12,6 +12,7 @@
 # This example was executed in Python 3.10.11
 # the "requests" library replaced the "urllibs" library, which I could not get to work.
 
+# Examples of Data format (Note: "id" and the subsequent list of ids must be on their own line with no extra whitespace).
 # date-time range: ver:"3.0" range:"2020-01-01T12:00:00-04:00 New_York,2020-01-03T00:00:00-04:00 New_York" id @d7180b62-f926-4d22-812f-ed18b5c91937 @e8791f69-167c-47a2-8f9e-f25dd899b418
 # date range: ver:"3.0" range:"2020-01-01,2020-01-07" id @d7180b62-f926-4d22-812f-ed18b5c91937 @e8791f69-167c-47a2-8f9e-f25dd899b418
 # date: ver:"3.0" range:"2020-01-01" id @d7180b62-f926-4d22-812f-ed18b5c91937 @e8791f69-167c-47a2-8f9e-f25dd899b418
