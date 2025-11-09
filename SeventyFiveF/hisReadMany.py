@@ -24,7 +24,7 @@ import requests
 import json
 import SeventyFiveF.Auth as Auth
 
-def post(username, password, subscription_key, ids, date_range):
+class hisReadMany:
     """
     Retrieves historical data from the 75F API using "POST hisReadMany".
     Args:
@@ -36,29 +36,31 @@ def post(username, password, subscription_key, ids, date_range):
 
     Returns:
         results (dict):
-
     """
 
-    authorization_string = Auth.get_authorization(username, password, subscription_key)
+    def __init__(self, username, password, subscription_key, ids, date_range):
+        self.username = username
+        self.password = password
+        self.subscription_key = subscription_key
+        self.ids = ids
+        self.date_range = date_range
 
-    url = "https://api.75f.io/haystack/hisReadMany"
-
-    hdr ={
-        'Authorization': authorization_string,
-        'Accept': 'application/json',
-        'Content-Type': 'text/zinc',
-        'Cache-Control': 'no-cache',
-        'Ocp-Apim-Subscription-Key': subscription_key,
-    }
-
-    # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
-    item_list = ids.split(",")
-    items = '\n'.join(item_list)
-    data = f"ver:\"3.0\" range:\"{date_range}\"\nid\n{items}"
-
-    try:
-        response = requests.post(url, data=data, headers=hdr, timeout=30)
-        return json.loads(response.text)
-
-    except Exception as e:
-        raise Exception(f"Exception during SeventyFiveF.hisReadMany.post(): {e}")
+    def post(self):
+        authorization_string = Auth.get_authorization(self.username, self.password, self.subscription_key)
+        url = "https://api.75f.io/haystack/hisReadMany"
+        hdr ={
+            'Authorization': authorization_string,
+            'Accept': 'application/json',
+            'Content-Type': 'text/zinc',
+            'Cache-Control': 'no-cache',
+            'Ocp-Apim-Subscription-Key': self.subscription_key,
+        }
+        # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
+        item_list = self.ids.split(",")
+        items = '\n'.join(item_list)
+        data = f"ver:\"3.0\" range:\"{self.date_range}\"\nid\n{items}"
+        try:
+            response = requests.post(url, data=data, headers=hdr, timeout=30)
+            return json.loads(response.text)
+        except Exception as e:
+            raise Exception(f"Exception during SeventyFiveF.hisReadMany.post(): {e}")

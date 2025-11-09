@@ -1,6 +1,6 @@
 """
-A simple example of the 75F's API for hisReadMany using POST that displays the resulting "dict" object
-for the last (latest) trend point identified
+A simple example of the 75F's API for hisReadMany using POST that displays the resulting "dict" object of historical
+data.  This example retrieves the latest value.
 """
 import os
 import json
@@ -13,13 +13,13 @@ import SeventyFiveF.hisReadMany as rm
 username = os.environ.get("75F API Username")
 password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
-
+ids = "@52bdc021-71d3-4479-903e-0b0986a993ee"
 date_range = "latest"
-id = "@52bdc021-71d3-4479-903e-0b0986a993ee"
 
 # POST Call to API.  Returns a dict object.
 try:
-    results = rm.post(username, password, subscriptionKey, id, date_range)
+    reader = rm.hisReadMany(username, password, subscriptionKey, ids, date_range)
+    results = reader.post()
     print(json.dumps(results, indent=4))        # Display the resulting dictionary in text
 except Exception as e:
     print(e)
