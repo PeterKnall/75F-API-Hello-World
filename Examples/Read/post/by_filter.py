@@ -4,7 +4,7 @@
 # Read by filter (arrow operator): ver:"3.0" id,dis,equip,siteRef,system @6d78f1c0-d10a-4482-8058-db328441a669,"System Equip A",M,@b8a1a5be-3080-40e6-9161-64f39944db9e,M @84010772-46ec-4937-9430-71083196f2c4,"System Equip B",M,@b8a1a5be-3080-40e6-9161-64f39944db9e,M
 # Read by id: ver:"3.0" id @6d78f1c0-d10a-4482-8058-db328441a669 @84010772-46ec-4937-9430-71083196f2c4
 
-import SeventyFiveF.Read_By_Id as Read
+import SeventyFiveF.Read_By_Filter as Read
 import os
 import json
 
@@ -13,8 +13,8 @@ password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
 
 # Ready by id
-this_id = "@52bdc021-71d3-4479-903e-0b0986a993ee"
-reader = Read.Read_By_Id(username, password, subscriptionKey, this_id)
+query_string = "siteRef==@4f04cf8f-9d19-4138-b376-0cd468fc5545"
+reader = Read.Read_By_Filter(username, password, subscriptionKey, query_string)
 result = reader.post()
 
 print(json.dumps(result, indent=4))  # Display the resulting dictionary in text
