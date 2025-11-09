@@ -21,25 +21,25 @@
 #
 
 import requests
-import SeventyFiveF_Auth
 import json
+import SeventyFiveF.Auth as Auth
 
-def get_hisReadMany(username, password, subscription_key, ids, date_range):
+def post(username, password, subscription_key, ids, date_range):
     """
-    Retrieves historical data from the 75F API using hisReadMany.
+    Retrieves historical data from the 75F API using "POST hisReadMany".
     Args:
         username (string):  The Facilisight username that has API privileges
         password (string):  The password for the above username
         subscription_key (string): The subscription key for the above username from the 75F API website
-        ids (string): A line separated list of ids to retrieve historical data for (see README.md)
+        ids (string): A CSV list of ids to retrieve historical data for (see README.md)
         date_range (string): The date range to pull historical data for
 
     Returns:
-        results (json):
+        results (dict):
 
     """
 
-    authorization_string = SeventyFiveF_Auth.get_authorization(username, password, subscription_key)
+    authorization_string = Auth.get_authorization(username, password, subscription_key)
 
     url = "https://api.75f.io/haystack/hisReadMany"
 
@@ -52,15 +52,13 @@ def get_hisReadMany(username, password, subscription_key, ids, date_range):
     }
 
     # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
-    # TODO: send in a CSV list and separate here to clean up the code
-    data = \
-f"""ver:\"3.0\" range:\"{date_range}\"
-id
-{ids}"""
+    item_list = ids.split(",")
+    items = '\n'.join(item_list)
+    data = f"ver:\"3.0\" range:\"{date_range}\"\nid\n{items}"
 
     try:
         response = requests.post(url, data=data, headers=hdr, timeout=30)
         return json.loads(response.text)
 
     except Exception as e:
-        return "" # TODO: Handle or raise Exception as appropriate
+        raise Exception(f"Exception during SeventyFiveF.hisReadMany.post(): {e}")
