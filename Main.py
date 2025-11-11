@@ -11,7 +11,7 @@ subscriptionKey = os.environ.get("75F API Subscription Key")
 siteRef = "@944c7e72-2b10-4c75-af58-47261a4d8d69"                               # Reservoir Park CC
 query_string = f"zone and space and temp and siteRef=={siteRef}"                # Test this in Site Explorer
 
-reader = Read.Read_By_Filter(username, password, subscriptionKey, query_string)
+reader = Read.ReadByFilter(username, password, subscriptionKey, query_string)
 result = reader.post()
 
 # There are three groups of dicts returned in the JSON object

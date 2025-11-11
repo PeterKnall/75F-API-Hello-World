@@ -6,7 +6,7 @@
 
 import SeventyFiveF.Read as SeventyFiveF
 
-class Read_By_Filter(SeventyFiveF.Read):
+class ReadByFilter(SeventyFiveF.Read):
     def __init__(self, username, password, subscription_key, read_argument):
         super().__init__(username, password, subscription_key)
         self.read_argument = read_argument

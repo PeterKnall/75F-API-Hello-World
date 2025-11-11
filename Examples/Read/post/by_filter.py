@@ -11,7 +11,7 @@ subscriptionKey = os.environ.get("75F API Subscription Key")
 
 # Ready by id
 query_string = "siteRef==@4f04cf8f-9d19-4138-b376-0cd468fc5545"
-reader = Read.Read_By_Filter(username, password, subscriptionKey, query_string)
+reader = Read.ReadByFilter(username, password, subscriptionKey, query_string)
 result = reader.post()
 
 print(json.dumps(result, indent=4))  # Display the resulting dictionary in text
