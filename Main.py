@@ -8,39 +8,18 @@ password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
 
 # If you do not specify a site id, it will query all the sites you have access to
-siteRef = "@944c7e72-2b10-4c75-af58-47261a4d8d69"                               # Reservoir Park CC
-query_string = f"zone and space and temp and siteRef=={siteRef}"                # Test this in Site Explorer
+# query_string = "ccu"                                                            # Will return all the CCUs visible to "username"
+query_string = "building and equip"                                             # Will return all the buildings visible to "username"
 
 reader = Read.ReadByFilter(username, password, subscriptionKey, query_string)
 result = reader.post()
 
-# There are three groups of dicts returned in the JSON object
-print("-"*20)
-print(json.dumps(result["metadata"], indent=4))                                 # Pretty print the JSON object
-print("-"*20)
-print(json.dumps(result["cols"], indent=4))                                     # Pretty print the JSON object
-print("-"*20)
-print(json.dumps(result["rows"], indent=4))                                     # Pretty print the JSON object
-print("-"*20)
-
-# What is returned in the "rows" section is data about the currentTemp points that satisfy the query above.
-# Next, the interesting data needs to be pulled out and wrangled before being displayed in a graph.
-# For this example, interesting data includes:
-#    * id           "id": "r:9ce9946d-14e2-42ac-aa26-e68af9ac2a0d"
-#    * curVal       "curVal": "n:63.2"
-#    * dis          "dis": "Reservoir Park-VAV-1100-Current Temp"
-#    * ccuRef       "ccuRef": "r:b0f9b93b-3045-4cc5-a899-f474054a502e"
-#    * equipRef     "equipRef": "r:0845c5b9-8e78-4b14-960f-1a8212ec766e"
-#    * floorRef     "floorRef": "r:ebcbfd07-f5a8-4029-ad2f-9d2336ee531a"
-#    * roomRef      "roomRef": "r:dea5e0de-0787-4006-aa8c-51358afb99a5"
-# The "Ref" values will allow the points to be group dynamically later on.  The other rows can deleted.
-
 pd.set_option("display.max_columns", None)                                      # Show all the columns
+pd.set_option("display.max_rows", None)                                      # Show all the rows
 df = pd.DataFrame(result["rows"])                                               # Import into a data frame
-subset_cols = ["curVal", "dis", "id", "ccuRef", "equipRef", "floorRef", "roomRef"]
-df_subset = df[subset_cols]
 
-print(df_subset)
+print(df.to_csv(index=False))                                                   # Print CSV to console
+df.to_csv("sites.csv")                                                          # Save CSV to file
 
 oldStuff = """
 
@@ -76,3 +55,25 @@ df = df.drop("date_value2", axis=1)
 df.plot(x='time', y='value')
 plt.show()
 """
+
+
+# There are three groups of dicts returned in the JSON object
+# print("-"*20)
+# print(json.dumps(result["metadata"], indent=4))                                 # Pretty print the JSON object
+# print("-"*20)
+# print(json.dumps(result["cols"], indent=4))                                     # Pretty print the JSON object
+# print("-"*20)
+# print(json.dumps(result["rows"], indent=4))                                     # Pretty print the JSON object
+# print("-"*20)
+
+# What is returned in the "rows" section is data about the currentTemp points that satisfy the query above.
+# Next, the interesting data needs to be pulled out and wrangled before being displayed in a graph.
+# For this example, interesting data includes:
+#    * id           "id": "r:9ce9946d-14e2-42ac-aa26-e68af9ac2a0d"
+#    * curVal       "curVal": "n:63.2"
+#    * dis          "dis": "Reservoir Park-VAV-1100-Current Temp"
+#    * ccuRef       "ccuRef": "r:b0f9b93b-3045-4cc5-a899-f474054a502e"
+#    * equipRef     "equipRef": "r:0845c5b9-8e78-4b14-960f-1a8212ec766e"
+#    * floorRef     "floorRef": "r:ebcbfd07-f5a8-4029-ad2f-9d2336ee531a"
+#    * roomRef      "roomRef": "r:dea5e0de-0787-4006-aa8c-51358afb99a5"
+# The "Ref" values will allow the points to be group dynamically later on.  The other rows can deleted.

@@ -69,3 +69,13 @@ https://project-haystack.org/doc/docHaystack/Zinc
 ---
 ## JSON
 JSON stands for Javascript Object Notation.
+
+---
+Entity Types include:
+* Point
+* Buildingoccupancy
+* Schedule
+* Floor
+* Room
+* Equip
+* Device
