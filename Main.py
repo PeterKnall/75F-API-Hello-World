@@ -23,29 +23,35 @@ siteId_List = siteId_df["siteRef"].tolist()
 dis_List = siteId_df["dis"].tolist()
 
 first = True
+counter = 0
 for site,name in zip(siteId_List, dis_List):
-    name_string = name.split("-")[0]
-    siteId = site.split(":")[1]
-    # query_string = f"ccu and siteRef==@{siteId}"          # Retrieve all the CCUs at a site
-    query_string = f"temp and space and siteRef==@{siteId}"
-    print(f"{name_string}")
+    try:
+        name_string = name.split("-")[0]
+        siteId = site.split(":")[1]
+        # query_string = f"ccu and siteRef==@{siteId}"          # Retrieve all the CCUs at a site
+        query_string = f"temp and space and siteRef==@{siteId}"
+        print(f"{counter} {name_string}")
 
-    # convert string pattern into number
-    ccus = get_df(query_string)
-    ccus["value_string"] = ccus["curVal"].str.extract(float_pattern)[0]
-    ccus["value"] = pd.to_numeric(ccus["value_string"])
+        # convert string pattern into number
+        ccus = get_df(query_string)
+        ccus["value_string"] = ccus["curVal"].str.extract(float_pattern)[0]
+        ccus["value"] = pd.to_numeric(ccus["value_string"])
 
-    ccus["site_name"] = name_string
+        ccus["site_name"] = name_string
+        ccus["counter"] = counter
 
-    # PK Pretty Print
-    select_columns = ["site_name", "dis", "value", "unit"]
-    show_columns = ccus[select_columns]
-    # print(show_columns)
-    if first:
-        first = False
-        show_columns.to_csv("data.csv", header=True, index=False)
-    else:
-        show_columns.to_csv("data.csv", mode='a', header=False, index=False)
+        # PK Pretty Print
+        select_columns = ["counter", "site_name", "dis", "value", "unit"]
+        show_columns = ccus[select_columns]
+        # print(show_columns)
+        if first:
+            first = False
+            show_columns.to_csv("data.csv", header=True, index=False)
+        else:
+            show_columns.to_csv("data.csv", mode='a', header=False, index=False)
+        counter += 1
+    except Exception as e:
+        print(f"Exception: {e}")
 
 
 
