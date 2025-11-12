@@ -7,36 +7,61 @@ username = os.environ.get("75F API Username")
 password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
 
-# If you do not specify a site id, it will query all the sites you have access to
-# query_string = "ccu"                                                            # Will return all the CCUs visible to "username"
-query_string = "building and equip"                                             # Will return all the buildings visible to "username"
-
-reader = Read.ReadByFilter(username, password, subscriptionKey, query_string)
-result = reader.post()
-
+float_pattern = r'[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?'
 pd.set_option("display.max_columns", None)                                      # Show all the columns
-pd.set_option("display.max_rows", None)                                      # Show all the rows
-df = pd.DataFrame(result["rows"])                                               # Import into a data frame
+pd.set_option("display.max_rows", None)                                         # Show all the rows
 
-print(df.to_csv(index=False))                                                   # Print CSV to console
-df.to_csv("sites.csv")                                                          # Save CSV to file
+def get_df(query_string):
+    reader = Read.ReadByFilter(username, password, subscriptionKey, query_string)
+    result = reader.post()
+    df = pd.DataFrame(result["rows"])                                           # Import into a data frame
+    return df
+
+siteId_df = get_df("building and equip")       # Returns all buildings w/ siteId
+
+siteId_List = siteId_df["siteRef"].tolist()
+dis_List = siteId_df["dis"].tolist()
+
+first = True
+for site,name in zip(siteId_List, dis_List):
+    name_string = name.split("-")[0]
+    siteId = site.split(":")[1]
+    # query_string = f"ccu and siteRef==@{siteId}"          # Retrieve all the CCUs at a site
+    query_string = f"temp and space and siteRef==@{siteId}"
+    print(f"{name_string}")
+
+    # convert string pattern into number
+    ccus = get_df(query_string)
+    ccus["value_string"] = ccus["curVal"].str.extract(float_pattern)[0]
+    ccus["value"] = pd.to_numeric(ccus["value_string"])
+
+    ccus["site_name"] = name_string
+
+    # PK Pretty Print
+    select_columns = ["site_name", "dis", "value", "unit"]
+    show_columns = ccus[select_columns]
+    # print(show_columns)
+    if first:
+        first = False
+        show_columns.to_csv("data.csv", header=True, index=False)
+    else:
+        show_columns.to_csv("data.csv", mode='a', header=False, index=False)
+
+
+
+
+
+
+
 
 oldStuff = """
 
 
 # Need to reincorporate the data wrangling items
 
-ids = "@52bdc021-71d3-4479-903e-0b0986a993ee,@52b2309a-10ec-4578-af76-8c1130c58044"
 
-float_pattern = r'[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?'
-
-pd.set_option('display.max_columns', None)                  # Pandas option to display all columns (do not use "...")
 these_rows = results["rows"][0]["data"]                     # Navigate thorough the dict and find the Trend Data List
 df = pd.DataFrame(these_rows)                               # Store that list in a Pandas Data Frame
-
-# Wrangle the data value
-df['str_value'] = df['val'].str.extract(float_pattern)[0]   # Extract the "number" portion of the value columns
-df['value'] = pd.to_numeric(df['str_value'])                # Convert the text "number" portion to a numeric type
 
 # Wrangle the date stamp
 df['date_value1'] = df['ts'].str.split(":", n=1).str[1]     # Remove the "n:" portion of the date stamp
