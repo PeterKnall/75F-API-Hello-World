@@ -29,7 +29,7 @@ for site,name in zip(siteId_List, dis_List):
         name_string = name.split("-")[0]
         siteId = site.split(":")[1]
         # query_string = f"ccu and siteRef==@{siteId}"          # Retrieve all the CCUs at a site
-        query_string = f"temp and space and siteRef==@{siteId}"
+        query_string = f"temp and space and not cm and siteRef==@{siteId}"
         print(f"{counter} {name_string}")
 
         # convert string pattern into number
