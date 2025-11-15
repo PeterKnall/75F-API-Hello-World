@@ -67,8 +67,8 @@ for site_ref,dis in zip(site_ref_List, dis_List):
     # Guard Clause: An exception is generated if the dataframe does not contain the expected columns.
     # Check for this situation so an exception handler is not necessary.
     if not {'dis', 'createdDate'}.issubset(site_ccu_df.columns):
-        print(f"{name_string} CCU list is empty.")
-        continue                                            # SKIP!
+        print(f"{name_string} Missing required columns - SKIP!.")
+        continue
 
     # Overwrite the output file the first time, append afterwards
     if is_first:
