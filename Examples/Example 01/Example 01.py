@@ -16,7 +16,7 @@ subscriptionKey = os.environ.get("75F API Subscription Key")                    
 
 pd.set_option("display.max_columns", None)                                      # Show all the columns
 pd.set_option("display.max_rows", None)                                         # Show all the rows
-pd.options.mode.chained_assignment = None
+pd.options.mode.chained_assignment = None                                       # Silence a warning from Pandas
 
 def get_df(query_string):
     """
