@@ -45,31 +45,39 @@ final_ccu_df = pd.DataFrame()
 
 # This is where we make the chimichangas
 for site_ref,dis in zip(site_ref_List, dis_List):
+    name_string = dis.split("-")[0]                         # Remove "-buildingEquip" from text
+    site_id = site_ref.split(":")[1]                        # Remove "r:" from text
+
+    print(f"{number_of_sites_processed} {name_string}")     # Let the user know you're working on it
+
+    query_string = f"ccu and siteRef==@{site_id}"           # Retrieve all the CCUs at a site
+
+    # Try/Except should only surround the code that may generate an exception
     try:
-        name_string = dis.split("-")[0]                         # Remove "-buildingEquip" from text
-        site_id = site_ref.split(":")[1]                        # Remove "r:" from text
-
-        print(f"{number_of_sites_processed} {name_string}")     # Let the user know you're working on it
-
-        query_string = f"ccu and siteRef==@{site_id}"           # Retrieve all the CCUs at a site
         site_ccu_df = get_df(query_string)
-
-        # Overwrite the output file the first time, append afterwards
-        if is_first:
-            site_ccu_df.to_csv("ccu_df.csv", header=True, index=False)
-            is_first = False
-        else:
-            site_ccu_df.to_csv("ccu_df.csv", header=False, index=False, mode='a')
-
-        column_filter_list = ["dis", "createdDate"]
-        filtered_ccu_df = site_ccu_df[column_filter_list]
-        filtered_ccu_df['site_id'] = site_id
-        filtered_ccu_df['site_name'] = name_string
-        final_ccu_df = pd.concat([final_ccu_df, filtered_ccu_df], ignore_index=True)
-
-        number_of_sites_processed += 1
     except Exception as e:
         print(f"Exception: {e}")
+
+    # Guard Clause: An exception is generated if the dataframe does not contain the expected columns.
+    # Check for this situation so an exception handler is not necessary.
+    if not {'dis', 'createdDate'}.issubset(site_ccu_df.columns):
+        print(f"{name_string} CCU list is empty.")
+        continue                                            # SKIP!
+
+    # Overwrite the output file the first time, append afterwards
+    if is_first:
+        site_ccu_df.to_csv("ccu_df.csv", header=True, index=False)
+        is_first = False
+    else:
+        site_ccu_df.to_csv("ccu_df.csv", header=False, index=False, mode='a')
+
+    column_filter_list = ["dis", "createdDate"]
+    filtered_ccu_df = site_ccu_df[column_filter_list]
+    filtered_ccu_df['site_id'] = site_id
+    filtered_ccu_df['site_name'] = name_string
+    final_ccu_df = pd.concat([final_ccu_df, filtered_ccu_df], ignore_index=True)
+
+    number_of_sites_processed += 1
 
 # View the results
 print(final_ccu_df)
