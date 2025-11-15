@@ -29,8 +29,8 @@ def get_df(query_string):
     df = pd.DataFrame(result["rows"])                                           # Import into a data frame
     return df
 
-site_ref_df = get_df("building and equip")                                      # Returns all buildings w/ siteId
-site_ref_df.to_csv("siteId_df.csv", header=True, index=False)         # Save DataFrame to CSV for viewing
+site_ref_df = get_df("building and equip")                                      # Returns all the site ids for all bldgs
+site_ref_df.to_csv("site_ref_df.csv", header=True, index=False)       # Save DataFrame to CSV for viewing
 
 # Pull the list of Site Ids and Display Names fom the DataFrame.  These lists will be in the same order as they appear
 # in the DataFrame, so items with the same index will correspond to the same entry.
@@ -66,10 +66,10 @@ for site_ref,dis in zip(site_ref_List, dis_List):
 
     # Overwrite the output file the first time, append afterwards
     if is_first:
-        site_ccu_df.to_csv("ccu_df.csv", header=True, index=False)
+        site_ccu_df.to_csv("site_ccu_df.csv", header=True, index=False)
         is_first = False
     else:
-        site_ccu_df.to_csv("ccu_df.csv", header=False, index=False, mode='a')
+        site_ccu_df.to_csv("site_ccu_df.csv", header=False, index=False, mode='a')
 
     column_filter_list = ["dis", "createdDate"]
     filtered_ccu_df = site_ccu_df[column_filter_list]
@@ -81,4 +81,4 @@ for site_ref,dis in zip(site_ref_List, dis_List):
 
 # View the results
 print(final_ccu_df)
-final_ccu_df.to_csv("ccu_list.csv", header=True, index=False)
+final_ccu_df.to_csv("final_ccu_df.csv", header=True, index=False)
