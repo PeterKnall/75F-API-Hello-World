@@ -40,7 +40,7 @@ dis_List = site_ref_df["dis"].tolist()
 is_first = True
 number_of_sites_processed = 0
 
-# Create an empty DataFame outside the scope of the loop so the DataFrame persists after the loop is complete.
+# Create an empty DataFame outside the scope of the for loop so the DataFrame persists after the loop is complete.
 final_ccu_df = pd.DataFrame()
 
 # This is where we make the chimichangas
