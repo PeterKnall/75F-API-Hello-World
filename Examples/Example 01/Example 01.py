@@ -47,7 +47,6 @@ final_ccu_df = pd.DataFrame()
 for site_ref,dis in zip(site_ref_List, dis_List):
     name_string = dis.split("-")[0]                         # Remove "-buildingEquip" from text
     site_id = site_ref.split(":")[1]                        # Remove "r:" from text
-
     print(f"{number_of_sites_processed} {name_string}")     # Let the user know you're working on it
 
     query_string = f"ccu and siteRef==@{site_id}"           # Retrieve all the CCUs at a site
