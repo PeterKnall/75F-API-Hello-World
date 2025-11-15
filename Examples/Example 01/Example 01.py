@@ -6,6 +6,12 @@ import pandas as pd
 Example 01
 Retrieve all CCUs across all projects.  Pulling all the CCUs across all the projects may be too much for the API
 to handle at once, so the requests are broken down by site.
+
+Output files:
+
+site_ref_df.csv             Table of site data returned while searching for all the accessable sites
+site_ccu_df.csv             The CCU information returned on a per-site basis (appended together into one CSV)
+final_ccu_df.csv            The final CCU table
 """
 
 # These values are stored in the Windows Environmental Variables so they can be accessed during runtime
