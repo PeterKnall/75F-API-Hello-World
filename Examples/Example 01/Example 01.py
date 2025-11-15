@@ -58,6 +58,7 @@ for site_ref,dis in zip(site_ref_List, dis_List):
     query_string = f"ccu and siteRef==@{site_id}"           # Retrieve all the CCUs at a site
 
     # Try/Except should only surround the code that may generate an exception
+    site_ccu_df = pd.DataFrame()
     try:
         site_ccu_df = get_df(query_string)
     except Exception as e:
