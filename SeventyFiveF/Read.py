@@ -37,4 +37,4 @@ class Read:
             raise Exception(f"Exception during SeventyFiveF.Read(): {e}")
 
     def get_body(self):
-        pass
+        raise Exception("Read should not be used directly.  Use one of the 'ReadyBy' children instead.")
