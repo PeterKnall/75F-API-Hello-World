@@ -2,14 +2,36 @@
 A collection of projects serving as "PKs Notes" on how to use various 75F APIs.
 
 ---
-## Read
-Retrieve a value or list of values using one of the following methods:
-* Read by filter: ver:"3.0" filter "system and equip and siteRef==@b8a1a5be-3080-40e6-9161-64f39944db9e"
-* Read by filter (paged): ver:"3.0" size:25 page:3 filter "system and equip and siteRef==@b8a1a5be-3080-40e6-9161-64f39944db9e"
-* Read by filter (arrow operator): ver:"3.0" id,dis,equip,siteRef,system @6d78f1c0-d10a-4482-8058-db328441a669,"System Equip A",M,@b8a1a5be-3080-40e6-9161-64f39944db9e,M @84010772-46ec-4937-9430-71083196f2c4,"System Equip B",M,@b8a1a5be-3080-40e6-9161-64f39944db9e,M
-* Read by id: ver:"3.0" id @6d78f1c0-d10a-4482-8058-db328441a669 @84010772-46ec-4937-9430-71083196f2c4
+
+## Examples are organized as follows:
+* Example 00 - List all Site IDs
+* Example 01 - List all CCUs on all Sites
+* Example 02 - List all the current temperatures on all sites
+* Example 03 - List all the current temperatures, heating setpoints, cooling setpoints, and temperature deviations on all sites
+* Example 04 - List all equipment with its time zone
+* Example 05 - Plot a current temperature
+* hisReadMany date - Retrieve trends using a YYYY-MM-DD date
+* hisReadMany date_range - Retrieve trends using two YYYY-MM-DD dates
+* hisReadMany datetime_range - Retrieve trends using two datetime stamps
+* hisReadMany today - Retrieve trends using "today" as the range
+* hisReadMany latest - Retrieve the last trend point using the "latest" range
+* hisReadMany yesterday - Retrieve yesterday's trend points using the "yesterday" range
+* Read by_filter - Retrieve information using a tag filter
+* Read by_filter_arrow - Retrieve information using a lambda function
+* Read by_filter_paged - Retrieve information with a tag filter and page the results
+* Read by_id - Retrieve information using an reference id
+
+Note:  Results may differ based on the access privileges of the account used to log in.
+
 ---
-## hisReadMany
+## 75F API "Read" Functions
+Retrieve a value or list of values using one of the following methods:
+* Read by filter
+* Read by filter (paged)
+* Read by filter (arrow operator)
+* Read by id
+---
+## 75F API "hisReadMany" Functions
 Used to read time-series (trend) data from points in the Facilisight platform.
 Points can be selected with tags or Haystack queries, and the time range can
 be defined by specific DateTime ranges or through the use of commonly
@@ -19,13 +41,14 @@ The request in this example uses an HTTP 1.1 POST Request and Response to
 transmit and receive data.  The data is transmitted using Zinc formatted
 grid and received as text in JSON format.
 
-### Version
+### Zinc formatting of the request body
+#### Version
 The following text, as shown, must appear as the first argument in the 
 Request text to identify the version of Zinc being used:
 
 ver:"3.0"
 
-### Range
+#### Range
 Range can be formatted as:
 * "today"
 * "yesterday"
@@ -42,12 +65,12 @@ And date is formatted as:
 
 "2020-01-01"
 
-### ids
+#### ids
 
 "ids" are GUIDs for individual points.  Each id must begin with an "@"
 symbol, and only one id can appear on each line.
 
-### Example
+#### Example
 Note in the example below that there is no extra whitespace.  Extra spaces
 may cause the request to crash and return a Zinc error.
 
@@ -71,6 +94,7 @@ https://project-haystack.org/doc/docHaystack/Zinc
 JSON stands for Javascript Object Notation.
 
 ---
+## 75F Haystack Entity Types
 Entity Types include:
 * Point
 * Buildingoccupancy
@@ -79,3 +103,22 @@ Entity Types include:
 * Room
 * Equip
 * Device
+
+---
+
+## Response JSON Structure
+The response to these queries has three main children from the root:
+* metadata
+* columns
+* rows
+
+The information of interest is usually in "rows" and can be read directly into a Pandas DataFrame by:
+```
+response = requests.post(url, data=data, headers=hdr, timeout=30)
+result = response.post()
+df = pd.DataFrame(result["rows"])
+```
+Which makes things so much easier.
+
+---
+
