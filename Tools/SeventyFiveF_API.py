@@ -42,3 +42,15 @@ class SeventyFiveF_API:
         except Exception as e:
             print(f"Error during get_df_by_filter(\'building and equip\': {e}")
             return pd.DataFrame()
+
+    def remove_building_equip_text(self, display_name_string):
+        """
+        Splits the string on "-" and returns the first match.  Effective in removing the "-buildingEquip" text
+        from a string.
+        :param display_name_string: Display Name ('dis')
+        :return: Display Name with the "-buildingEquip" removed
+        """
+        if "-" in display_name_string:
+            return display_name_string.split("-")[0]
+        else:
+            return display_name_string
