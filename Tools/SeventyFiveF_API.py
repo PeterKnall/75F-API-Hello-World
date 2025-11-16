@@ -54,3 +54,14 @@ class SeventyFiveF_API:
             return display_name_string.split("-")[0]
         else:
             return display_name_string
+
+    def remove_type_infromation_text(self, type_text):
+        """
+        Removes the type text from an entry.  This text usually appears as "n:", or something similar.
+        :param type_text: Information returned from 75F API
+        :return: Information without the type text.
+        """
+        if ":" in type_text:
+            return type_text.split(":")[1]
+        else:
+            return type_text
