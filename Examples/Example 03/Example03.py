@@ -153,6 +153,5 @@ for site_ref,name in zip(site_ref_List, dis_List):
 
     number_of_sites_processed += 1
 
-
 print(final_temp_report_df)
 final_temp_report_df.to_csv("final_temp_report_df.csv", header=True, index=False)
