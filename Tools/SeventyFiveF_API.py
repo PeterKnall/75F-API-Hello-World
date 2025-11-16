@@ -1,4 +1,3 @@
-import os
 import SeventyFiveF.ReadByFilter as ReadByFilter
 import pandas as pd
 
@@ -41,26 +40,3 @@ class SeventyFiveF_API:
             return self.get_df_by_filter("building and equip")
         except Exception as e:
             raise Exception(f"Error during get_all_site_ids_df(\'building and equip\': {e}")
-
-    def remove_building_equip_text(self, display_name_string):
-        """
-        Splits the string on "-" and returns the first match.  Effective in removing the "-buildingEquip" text
-        from a string.
-        :param display_name_string: Display Name ('dis')
-        :return: Display Name with the "-buildingEquip" removed
-        """
-        if "-" in display_name_string:
-            return display_name_string.split("-")[0]
-        else:
-            return display_name_string
-
-    def remove_type_infromation_text(self, type_text):
-        """
-        Removes the type text from an entry.  This text usually appears as "n:", or something similar.
-        :param type_text: Information returned from 75F API
-        :return: Information without the type text.
-        """
-        if ":" in type_text:
-            return type_text.split(":")[1]
-        else:
-            return type_text
