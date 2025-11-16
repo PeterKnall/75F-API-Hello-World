@@ -22,15 +22,23 @@ class SeventyFiveF_API:
         Retrieves data from the 75F API and returns the data in a Pandas DataFrame.
         :param query_string: A Haystack Query to select the desired data.
         :return: A Pandas Dataframe with the data returned from the API.
+        :exception: Echo error to console and return an empty dataframe
         """
-        reader = ReadByFilter.ReadByFilter(self.username, self.password, self.subscriptionKey, query_string)
-        result = reader.post()
-        df = pd.DataFrame(result["rows"])  # Import into a data frame
-        return df
+        try:
+            reader = ReadByFilter.ReadByFilter(self.username, self.password, self.subscriptionKey, query_string)
+            result = reader.post()
+            return pd.DataFrame(result["rows"])
+        except Exception as e:
+            print(f"Error during get_df_by_filter(\'{query_string}\': {e}")
+            return pd.DataFrame()
 
     def get_all_site_ids_df(self):
         """
         Retrieves all the sites the user has access to.
         :return: Pandas DataFrame
         """
-        return self.get_df_by_filter("building and equip")
+        try:
+            return self.get_df_by_filter("building and equip")
+        except Exception as e:
+            print(f"Error during get_df_by_filter(\'building and equip\': {e}")
+            return pd.DataFrame()
