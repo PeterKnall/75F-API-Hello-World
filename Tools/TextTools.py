@@ -1,5 +1,5 @@
 
-class DataFrameTools:
+class TextTools:
 
     def __init__(self):
         pass

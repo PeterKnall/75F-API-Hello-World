@@ -29,11 +29,22 @@ for site,name in zip(siteId_List, dis_List):
         name_string = name.split("-")[0]
         siteId = site.split(":")[1]
         # query_string = f"ccu and siteRef==@{siteId}"          # Retrieve all the CCUs at a site
-        query_string = f"temp and space and not cm and not ti and siteRef==@{siteId}"
+        # query_string = f"temp and space and not cm and not ti and siteRef==@{siteId}"  # Returns the current temp
+        query_string = f"temp and not cm and not ti and ((desired and (heating or cooling)) or space) and siteRef==@{siteId}"
         print(f"{counter} {name_string}")
 
         # convert string pattern into number
         ccus = get_df(query_string)
+        #ccus.to_csv("DataFrameToolsTest.csv", header=True, index=False)
+        #print(ccus)
+
+        df_filtered = pd.DataFrame()
+        df_filtered["equipRef"] = ccus[ccus["domainName"]=="currentTemp"]["equipRef"]
+        df_filtered["domainName"] = ccus[ccus["equipRef"]==df_filtered["equipRef"]]["domainName"]
+        print(f"df_filtered: {df_filtered}")
+
+        break
+        oldText = """
         ccus["value_string"] = ccus["curVal"].str.extract(float_pattern)[0]
         ccus["value"] = pd.to_numeric(ccus["value_string"])
 
@@ -46,10 +57,11 @@ for site,name in zip(siteId_List, dis_List):
         # print(show_columns)
         if first:
             first = False
-            show_columns.to_csv("data.csv", header=True, index=False)
+            show_columns.to_csv("DataFrameToolsTest.csv", header=True, index=False)
         else:
-            show_columns.to_csv("data.csv", mode='a', header=False, index=False)
+            show_columns.to_csv("DataFrameToolsTest.csv", mode='a', header=False, index=False)
         counter += 1
+        """
     except Exception as e:
         print(f"Exception: {e}")
 
