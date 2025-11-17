@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import SeventyFiveF.hisReadMany as rm
 
 """
-Example 05
-Read in a historical value and plot it.
+Example 06
+Read in the current temperature, desired heating temperature, and desired cooling temperature historical values
+and plot them.
 """
 
 username = os.environ.get("75F API Username")
@@ -13,20 +14,25 @@ password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
 
 float_pattern = r'[+-]?(\d+(\.\d*)?|\.\d+)'
-pd.set_option("display.max_columns", None)                                      # Show all the columns
-pd.set_option("display.max_rows", None)                                         # Show all the rows
+pd.set_option("display.max_columns", None)                                        # Show all the columns
+pd.set_option("display.max_rows", None)                                           # Show all the rows
 
 # Reservoir Park Second Floor VAV 16 Current Temp
-ids = "@52bdc021-71d3-4479-903e-0b0986a993ee"
+roomRef = "@5fd12b52-b7b6-43b7-b958-1d74d9912c92"
+target_trend_domain_names = ['currentTemp', 'desiredTempCooling', 'desiredTempHeating']
 date_range = "today"
 
-# POST Call to API.  Returns a dict object.
+# turn target_trend_domain_names into a list of ids
+for domain_name in target_trend_domain_names:
+    pass
+ids=[]
+
 try:
     reader = rm.hisReadMany(username, password, subscriptionKey, ids, date_range)
     results = reader.post()
 
-    these_rows = results["rows"][0]["data"]                                     # Navigate thorough the dict and find the Trend Data List
-    trend_df = pd.DataFrame(these_rows)                                         # Store that list in a Pandas Data Frame
+    these_rows = results["rows"][0]["data"]                                       # Navigate thorough the dict and find the Trend Data List
+    trend_df = pd.DataFrame(these_rows)                                           # Store that list in a Pandas Data Frame
 
     # Wrangle the date stamp
     trend_df['date_value1'] = trend_df['ts'].str.split(":", n=1).str[1]           # Remove the "n:" portion of the date stamp
