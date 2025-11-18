@@ -50,7 +50,7 @@ class SeventyFiveF_API:
         '''
         pass
 
-    def get_hist_by_query(self, query_string, range):
+    def get_ids_by_query(self, query_string):
         '''
         Retrieve historian data using a query.
         :param query_string: Query string to identify historian points
