@@ -10,7 +10,7 @@ password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
 
 # Ready by id
-this_id = "@52bdc021-71d3-4479-903e-0b0986a993ee"
+this_id = ["@52bdc021-71d3-4479-903e-0b0986a993ee"]
 reader = Read.Read_By_Id(username, password, subscriptionKey, this_id)
 result = reader.post()
 

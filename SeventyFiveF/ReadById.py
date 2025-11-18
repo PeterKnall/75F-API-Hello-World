@@ -13,4 +13,5 @@ class Read_By_Id(SeventyFiveF.Read):
 
     def get_body(self):
         # NOTE:  The "id" filter does not use quotes around the argument, the "filter" filter does
-        return f"ver:\"3.0\"\nid\n{self.read_argument}"
+        ids = "\n".join(self.read_argument)
+        return f"ver:\"3.0\"\nid\n{ids}"
