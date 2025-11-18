@@ -38,7 +38,6 @@ for domain_name in target_trend_domain_names:
         query_string = query_string + " or "
     query_string = query_string + f"domainName==@{domain_name}"
 query_string = query_string + ")"
-# print(query_string)
 
 # Retrieve a data frame containing the necessary IDs
 point_ref_df = pd.DataFrame()
@@ -51,9 +50,7 @@ point_ref_df.to_csv("point_ref_df.csv", header=True, index=False)
 # Convert ids to a comma separated string to send to rm.hisReadMany
 point_ref_df["idRef"] = [text_tools.remove_type_infromation_text(x) for x in point_ref_df["id"]]
 point_ref_df["idRef"] = "@" + point_ref_df["idRef"].astype(str)
-id_list = point_ref_df["idRef"].tolist()
-ids = ",".join(id_list)
-# print(f"ids: {ids}")
+ids = point_ref_df["idRef"].tolist()
 
 # Get the historical data with hisReadMany
 date_range = "today"
@@ -61,7 +58,6 @@ results = ""
 try:
     reader = rm.hisReadMany(username, password, subscriptionKey, ids, date_range)
     results = reader.post()
-    #print(json.dumps(results, indent=4))        # Display the resulting dictionary in text
 except Exception as e:
     print(e)
 historical_df = pd.DataFrame(results["rows"])
@@ -73,9 +69,9 @@ for row in historical_df.iterrows():
     trend_df.to_csv("trend_df.csv", header=True, index=False)
 
     # Wrangle the date stamp
-    trend_df['date_value1'] = trend_df['ts'].str.split(":", n=1).str[1]           # Remove the "n:" portion of the date stamp
-    trend_df['date_value2'] = trend_df['date_value1'].str.split(" ", n=1).str[0]  # Remove the city portion of the date stamp (Detroit)
-    trend_df['time'] = pd.to_datetime(trend_df['date_value2'], format="ISO8601")  # Convert to datetime object
+    trend_df['date_value1'] = trend_df['ts'].str.split(":", n=1).str[1]             # Remove the "n:" portion of the date stamp
+    trend_df['date_value2'] = trend_df['date_value1'].str.split(" ", n=1).str[0]    # Remove the city portion of the date stamp (Detroit)
+    trend_df['time'] = pd.to_datetime(trend_df['date_value2'], format="ISO8601")    # Convert to datetime object
 
     # Convert curVal to a float type
     trend_df["value"] = pd.to_numeric(trend_df["val"].str.extract(float_pattern)[0])
@@ -86,44 +82,7 @@ for row in historical_df.iterrows():
     trend_df = trend_df.drop("date_value1", axis=1)
     trend_df.drop("date_value2", axis=1, inplace=True)
 
+    # Add this Dataframe's information to the current plot, but do not show the plot yet
     plt.plot(trend_df['time'], trend_df['value'], label=row[1]["domainName"])
-plt.show()
 
-
-'''
-date_range = "today"
-
-# turn target_trend_domain_names into a list of ids
-for domain_name in target_trend_domain_names:
-    pass
-ids=[]
-
-try:
-    reader = rm.hisReadMany(username, password, subscriptionKey, ids, date_range)
-    results = reader.post()
-
-    these_rows = results["rows"][0]["data"]                                       # Navigate thorough the dict and find the Trend Data List
-    trend_df = pd.DataFrame(these_rows)                                           # Store that list in a Pandas Data Frame
-
-    # Wrangle the date stamp
-    trend_df['date_value1'] = trend_df['ts'].str.split(":", n=1).str[1]           # Remove the "n:" portion of the date stamp
-    trend_df['date_value2'] = trend_df['date_value1'].str.split(" ", n=1).str[0]  # Remove the city portion of the date stamp (Detroit)
-    trend_df['time'] = pd.to_datetime(trend_df['date_value2'], format="ISO8601")  # Convert to datetime object
-
-    # Convert curVal to a float type
-    trend_df["value"] = pd.to_numeric(trend_df["val"].str.extract(float_pattern)[0])
-
-    # Remove unneeded columns / clean-up df
-    trend_df = trend_df.drop("val", axis=1)
-    trend_df = trend_df.drop("ts", axis=1)
-    trend_df = trend_df.drop("date_value1", axis=1)
-    trend_df.drop("date_value2", axis=1, inplace=True)
-
-    trend_df.to_csv("trends_df.csv", header=True, index=False)
-
-    trend_df.plot(x='time', y='value')
-    plt.show()
-
-except Exception as e:
-    print(f"Exception: {e}")
-'''
+plt.show()                                                                          # Show the plot
