@@ -32,7 +32,7 @@ class hisReadMany:
         username (string):  The Facilisight username that has API privileges
         password (string):  The password for the above username
         subscription_key (string): The subscription key for the above username from the 75F API website
-        ids (string): A CSV list of ids to retrieve historical data for (see README.md)
+        ids (list): A list of ids to retrieve historical data for (see README.md)
         date_range (string): The date range to pull historical data for
 
     Returns:
@@ -57,8 +57,7 @@ class hisReadMany:
             'Ocp-Apim-Subscription-Key': self.subscription_key,
         }
         # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
-        item_list = self.ids.split(",")
-        items = '\n'.join(item_list)
+        items = '\n'.join(self.ids)
         data = f"ver:\"3.0\" range:\"{self.date_range}\"\nid\n{items}"
         try:
             response = requests.post(url, data=data, headers=hdr, timeout=30)

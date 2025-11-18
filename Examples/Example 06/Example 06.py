@@ -9,7 +9,7 @@ import SeventyFiveF.hisReadMany as rm
 """
 Example 06
 Read in the current temperature, desired heating temperature, and desired cooling temperature historical values
-and plot them.
+from a single zone and plot them.
 """
 
 username = os.environ.get("75F API Username")
@@ -17,20 +17,18 @@ password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
 
 float_pattern = r'[+-]?(\d+(\.\d*)?|\.\d+)'
-pd.set_option("display.max_columns", None)                                        # Show all the columns
-pd.set_option("display.max_rows", None)                                           # Show all the rows
 
 tools = api_tools.SeventyFiveF_API(username, password, subscriptionKey)
 text_tools = TextTools.TextTools()
 
+# x-axis display option for matplotlib.pyplot to show the date information in hours and minutes
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
 
-# Reservoir Park Second Floor VAV 16 Current Temp
-# Retrieve the necessary Ids
+# Reservoir Park Second Floor VAV 16
 roomRef = "5fd12b52-b7b6-43b7-b958-1d74d9912c92"
 target_trend_domain_names = ['currentTemp', 'desiredTempCooling', 'desiredTempHeating']
 
-# Build hisReadMany query string based on domain names
+# Build hisReadMany query string based on the domain names selected above
 is_first = True
 query_string = f"roomRef==@{roomRef} and ("
 for domain_name in target_trend_domain_names:
@@ -47,10 +45,10 @@ point_ref_df = pd.DataFrame()
 try:
     point_ref_df = tools.get_df_by_filter(query_string)
 except Exception as e:
-    print(f"Exception while retrieving DataFrame from API: {e}")
+    print(f"Exception while retrieving DataFrame from API: {e}\nQuery string:\n{query_string}")
 point_ref_df.to_csv("point_ref_df.csv", header=True, index=False)
 
-# Convert ids to a comma separated string
+# Convert ids to a comma separated string to send to rm.hisReadMany
 point_ref_df["idRef"] = [text_tools.remove_type_infromation_text(x) for x in point_ref_df["id"]]
 point_ref_df["idRef"] = "@" + point_ref_df["idRef"].astype(str)
 id_list = point_ref_df["idRef"].tolist()
