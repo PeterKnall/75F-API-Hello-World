@@ -38,6 +38,7 @@ df['dis'] = df['dis'].str.replace('-buildingEquip', '')
 
 selected_columns=['siteRef','dis']
 selected_siteId_df = df[selected_columns]
+selected_siteId_df.to_csv("selected_siteId_df.csv", header=True, index=False)
 
 print(selected_siteId_df)
 print(f"Available columns: {list(df.columns)}")
