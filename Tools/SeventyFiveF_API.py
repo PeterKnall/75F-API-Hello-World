@@ -40,3 +40,21 @@ class SeventyFiveF_API:
             return self.get_df_by_filter("building and equip")
         except Exception as e:
             raise Exception(f"Error during get_all_site_ids_df(\'building and equip\': {e}")
+
+    def get_hist_by_ids(self, ids, range):
+        '''
+        Retrieve historian data using a list of point ids.
+        :param ids: A list of IDs to retrieve historian data for
+        :param range: The range of dates to retrieve historian data for
+        :return: Pandas DataFrame with the historian data
+        '''
+        pass
+
+    def get_hist_by_query(self, query_string, range):
+        '''
+        Retrieve historian data using a query.
+        :param query_string: Query string to identify historian points
+        :param range: The range of dates to retrieve historian data for
+        :return: Pandas DataFrame with the historian data
+        '''
+        pass
