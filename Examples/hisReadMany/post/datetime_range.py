@@ -13,7 +13,7 @@ import SeventyFiveF.hisReadMany as rm
 username = os.environ.get("75F API Username")
 password = os.environ.get("75F API Password")
 subscriptionKey = os.environ.get("75F API Subscription Key")
-ids = "@52bdc021-71d3-4479-903e-0b0986a993ee"
+ids = ["@52bdc021-71d3-4479-903e-0b0986a993ee"]
 date_range = "2025-11-01T12:00:00-04:00 Detroit,2025-11-01T18:00:00-04:00 Detroit"
 
 # POST Call to API.  Returns a dict object.
