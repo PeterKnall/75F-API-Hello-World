@@ -29,6 +29,7 @@ def get_df(query_string):
     return df
 
 df = get_df("building and equip")                                               # Returns all building level equipment
+df.to_csv("df.csv", header=True, index=False)
 
 # The display name entries contain "-buildingEquip".  Remove this from all "dis" entries in the DataFrame.
 # However, Python does not know that the data in this column is a string, so the values are "cast" into a string
