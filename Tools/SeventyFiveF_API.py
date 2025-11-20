@@ -41,6 +41,12 @@ class SeventyFiveF_API:
         except Exception as e:
             raise Exception(f"Error during get_all_site_ids_df(\'building and equip\': {e}")
 
+    def get_all_equips_from_site(self):
+        pass
+
+    def get_all_rooms_from_site(self):
+        pass
+
     def get_hist_by_ids(self, ids, range):
         '''
         Retrieve historian data using a list of point ids.
