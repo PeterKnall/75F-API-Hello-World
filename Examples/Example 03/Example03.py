@@ -57,7 +57,7 @@ final_temp_report_df = pd.DataFrame()                                           
 
 for site_ref,name in zip(site_ref_List, dis_List):
     name_string = text_tools.remove_building_equip_text(name)
-    siteId = text_tools.remove_type_infromation_text(site_ref)
+    siteId = text_tools.remove_type_information_text(site_ref)
 
     # Retrieves the current temperature, desired heating setpoint, and desired cooling setpoint
     query_string = f"temp and not cm and not ti and ((desired and (heating or cooling)) or space) and siteRef==@{siteId}"
@@ -82,7 +82,7 @@ for site_ref,name in zip(site_ref_List, dis_List):
 
     # Add the equipment id
     df_filtered["equipRef"] = equip_df[equip_df["domainName"] == "currentTemp"]["equipRef"]
-    df_filtered["equip_id"] = [text_tools.remove_type_infromation_text(x) for x in df_filtered["equipRef"]]             # List Comprehension
+    df_filtered["equip_id"] = [text_tools.remove_type_information_text(x) for x in df_filtered["equipRef"]]             # List Comprehension
 
     # Add the display name
     for i, row in df_filtered.iterrows():

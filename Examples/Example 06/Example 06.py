@@ -48,7 +48,7 @@ except Exception as e:
 point_ref_df.to_csv("point_ref_df.csv", header=True, index=False)
 
 # Convert ids to a comma separated string to send to rm.hisReadMany
-point_ref_df["idRef"] = [text_tools.remove_type_infromation_text(x) for x in point_ref_df["id"]]
+point_ref_df["idRef"] = [text_tools.remove_type_information_text(x) for x in point_ref_df["id"]]
 point_ref_df["idRef"] = point_ref_df["idRef"].astype(str)
 ids = point_ref_df["idRef"].tolist()
 

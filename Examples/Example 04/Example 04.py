@@ -29,8 +29,8 @@ final_time_zone_df = pd.DataFrame()
 
 for site_ref,name in zip(site_ref_List, dis_List):
     name_string = text_tools.remove_building_equip_text(name)
-    site_id = text_tools.remove_type_infromation_text(site_ref)
-    siteId = text_tools.remove_type_infromation_text(site_ref)
+    site_id = text_tools.remove_type_information_text(site_ref)
+    siteId = text_tools.remove_type_information_text(site_ref)
 
     query_string = f"tz and not point and siteRef==@{site_id}"
     print(f"{number_of_sites_processed} {name}")

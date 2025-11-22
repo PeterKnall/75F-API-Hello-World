@@ -16,7 +16,7 @@ class TextTools:
         else:
             return display_name_string
 
-    def remove_type_infromation_text(self, type_text):
+    def remove_type_information_text(self, type_text):
         """
         Removes the type text from an entry.  This text usually appears as "n:", or something similar.
         :param type_text: Information returned from 75F API
