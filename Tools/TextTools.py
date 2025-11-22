@@ -20,6 +20,7 @@ class TextTools:
     def remove_type_information_text(self, type_text):
         """
         Removes the type text from an entry.  This text usually appears as "n:", or something similar.
+        For exampe: "r:2f279255-a859-4a2d-974e-1dfcb5f0c627" where the "r:" needs to be removed.
         :param type_text: Information returned from 75F API
         :return: Information without the type text.
         """
