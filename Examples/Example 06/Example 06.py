@@ -25,12 +25,12 @@ text_tools = TextTools.TextTools()
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
 
 # Reservoir Park Second Floor VAV 16
-roomRef = "5fd12b52-b7b6-43b7-b958-1d74d9912c92"
+room_ref = "5fd12b52-b7b6-43b7-b958-1d74d9912c92"
 target_trend_domain_names = ['currentTemp', 'desiredTempCooling', 'desiredTempHeating']
 
 # Build hisReadMany query string based on the domain names selected above
 is_first = True
-query_string = f"roomRef==@{roomRef} and ("
+query_string = f"roomRef==@{room_ref} and ("
 for domain_name in target_trend_domain_names:
     if is_first:
         is_first = False
