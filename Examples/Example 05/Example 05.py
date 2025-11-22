@@ -17,7 +17,9 @@ pd.set_option("display.max_columns", None)                                      
 pd.set_option("display.max_rows", None)                                         # Show all the rows
 
 # Reservoir Park Second Floor VAV 16 Current Temp
-ids = ["@52bdc021-71d3-4479-903e-0b0986a993ee"]
+ids = ["52bdc021-71d3-4479-903e-0b0986a993ee"]
+print(ids)
+
 date_range = "today"
 
 # POST Call to API.  Returns a dict object.
