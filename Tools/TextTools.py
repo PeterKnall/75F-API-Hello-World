@@ -1,3 +1,4 @@
+import re
 
 class TextTools:
 
@@ -43,3 +44,24 @@ class TextTools:
         else:
             # raise Exception(f"Cannot convert to float: {float_text}")
             return float(-998.0)
+
+    def get_query_string(self, reference_target, reference_string, item_target, item_tag_list):
+        '''
+        A generic two-part query string builder.  Constructs a query string that looks for the reference target
+        at the reference string AND any of the item_targets in the item_tag_list
+        :param reference_target: The major query filter (e.g., siteRef or roomRef)
+        :param reference_string: The reference for the major filter
+        :param item_target: The minor query filter (e.g., domainName)
+        :param item_tag_list: The minor filter query list (e.g., [currentTemp, desiredTempCooling, desiredTempHeating]
+        :return: The query string to send to the 75F API
+        '''
+        is_first = True
+        query_string = f"{reference_target}==@{reference_string} and ("
+        for item in item_tag_list:
+            if is_first:
+                is_first = False
+            else:
+                query_string = query_string + " or "
+            query_string = query_string + f"{item_target}==@{item}"
+        query_string = query_string + ")"
+        return query_string
