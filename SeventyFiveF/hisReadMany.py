@@ -57,6 +57,7 @@ class hisReadMany:
             'Ocp-Apim-Subscription-Key': self.subscription_key,
         }
         # The list sent to the 75F API (ids) must consist of one id on each line without any leading or trailing spaces.
+        self.ids = ["@" + s for s in self.ids]
         items = '\n'.join(self.ids)
         data = f"ver:\"3.0\" range:\"{self.date_range}\"\nid\n{items}"
         try:
