@@ -130,13 +130,13 @@ try:
             # x-axis display option for matplotlib.pyplot to show the date information in hours and minutes
             plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
 
-            #plt_filename = f"{date_directory}\\{name_string}_{title_string}.jpeg"
-            #try:
-            #    os.makedirs(date_directory, exist_ok=True)
-            #    plt.savefig(plt_filename)       # Safe to file
-            #except Exception as e:
-            #    print(f"Exception while trying to save data to file - {plt_filename}: {e}")
-            plt.show()
+            plt_filename = f"{date_directory}\\{name_string}_{title_string}.jpeg"
+            try:
+                os.makedirs(date_directory, exist_ok=True)
+                plt.savefig(plt_filename)       # Safe to file
+            except Exception as e:
+                print(f"Exception while trying to save data to file - {plt_filename}: {e}")
+            #plt.show()
             plt.clf()
 
             print(name_string, title_string)
