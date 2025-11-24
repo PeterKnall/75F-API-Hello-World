@@ -47,15 +47,20 @@ try:
         os.makedirs(site_directory_name, exist_ok=True)
 
         room_ref_df = api_tools.get_all_rooms_from_site_df(site_string)
+
         room_ref_df.to_csv("room_ref_df.csv", header=True, index=False)  # "id" is the roomRef
-        room_ref_list = room_ref_df["id"].tolist()
+        room_ref_list = []
+        try :
+            room_ref_list = room_ref_df["id"].tolist()
+        except Exception as e:
+            print(f"Exception while trying to list Room References: {e}")
+            continue
 
         if not room_ref_list:
             print(f"Room list for {display_name} is empty - SKIP")
             continue
 
         for room_id in room_ref_list:
-
             # Generate Query String
             room_ref = text_tools.remove_type_information_text(room_id)
             query_string = text_tools.get_query_string("roomRef", room_ref, "domainName", target_trend_domain_names)
@@ -142,5 +147,6 @@ try:
             print(name_string, title_string)
             # break  # Only show one plot for this site
         # break # Only one site
+    print("End")
 except Exception as e:
-    print(e)
+    print(f"Something bad has happened: {e}")
