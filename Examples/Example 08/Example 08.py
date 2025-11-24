@@ -140,7 +140,7 @@ try:
             plt.clf()
 
             print(name_string, title_string)
-            break  # Only show one plot for this site
-        break # Only one site
+            # break  # Only show one plot for this site
+        # break # Only one site
 except Exception as e:
     print(e)
