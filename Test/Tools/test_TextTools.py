@@ -5,6 +5,10 @@ import Tools.TextTools as TextTools
 class TestTextTools(TestCase):
 
 ##########
+    def test_remove_building_equip_text___with_two_hyphens(self):
+        test_string = "Canal-Place-buildingEquip"
+        expected_string = "Canal-Place"
+        self.assertEqual(expected_string, TextTools.TextTools.remove_building_equip_text(test_string))
 
     def test_remove_building_equip_text___with_hyphen(self):
         test_string = "Canal Place-buildingEquip"
