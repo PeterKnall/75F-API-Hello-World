@@ -17,7 +17,7 @@ class TextTools:
         if not display_name_string:
             raise Exception("Argument cannot be None.")
         if "-" in display_name_string:
-            return display_name_string.split("-")[0]
+            return display_name_string.replace("-buildingEquip","")
         else:
             return display_name_string
 
