@@ -82,3 +82,6 @@ class SeventyFiveF_API:
         :return: Pandas DataFrame with the historian data
         '''
         pass
+
+    def get_room_name_from_room_ref(self, id):
+        pass
