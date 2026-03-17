@@ -24,7 +24,7 @@ os.makedirs(parent_directory_name, exist_ok=True)
 directory_date_format_pattern = "%Y-%m-%d"
 
 # What am I doing?
-target_trend_domain_names = ['currentTemp', 'desiredTempCooling', 'desiredTempHeating']
+target_trend_domain_names = ['currentTemp', 'desiredTempCooling', 'desiredTempHeating', 'occupancyMode']
 date_range = "yesterday"
 
 # Instantiate tools classes
@@ -40,6 +40,9 @@ try:
     dis_list = site_ref_df["dis"].tolist()
 
     for site_id, display_name in zip(site_ref_list, dis_list):
+        print(site_id)
+        if site_id != "r:20a474cf-1eb8-405b-af54-6a5d059dafcf":
+            continue
         name_string = text_tools.remove_building_equip_text(display_name)
         site_string = text_tools.remove_type_information_text(site_id)
         print(f"{display_name} {site_string} {'x'*10}")
